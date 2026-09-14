@@ -1,6 +1,9 @@
 import os
 from typing import Optional
 from pydantic import BaseModel
+from dotenv import load_dotenv
+
+load_dotenv()
 
 class Settings(BaseModel):
     PROJECT_NAME: str = "CropCare AI"
@@ -10,8 +13,11 @@ class Settings(BaseModel):
     ALGORITHM: str = "HS256"
     ACCESS_TOKEN_EXPIRE_MINUTES: int = 60 * 24 * 7  # 7 days
     
-    # SQLite default with PostgreSQL pluggability
-    DATABASE_URL: str = os.getenv("DATABASE_URL", "sqlite:///./cropcare.db")
+    # PostgreSQL Database URL (Neon serverless)
+    DATABASE_URL: str = os.getenv(
+        "DATABASE_URL",
+        "postgresql://neondb_owner:npg_wrT0qeG8bXSh@ep-damp-bar-ae5hgeff-pooler.c-2.us-east-2.aws.neon.tech/neondb?sslmode=require&channel_binding=require"
+    )
     
     # Storage directory for uploaded leaf scans
     STORAGE_DIR: str = os.getenv("STORAGE_DIR", "./uploaded_scans")
