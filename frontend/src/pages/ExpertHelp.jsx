@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useLanguage } from '../contexts/LanguageContext';
 import { useAuth } from '../contexts/AuthContext';
-import { api } from '../services/api';
+import { api, API_BASE } from '../services/api';
 import { SeverityBadge } from '../components/SeverityBadge';
 import { Headphones, ShieldCheck, CheckCircle2, User, Phone, Calendar, ArrowRight, Loader2 } from 'lucide-react';
 
@@ -22,7 +22,7 @@ export function ExpertHelp({ initialScan }) {
   const loadRequests = async () => {
     setLoading(true);
     try {
-      const res = await fetch('/api/expert/requests');
+      const res = await fetch(`${API_BASE}/expert/requests`);
       if (res.ok) {
         const data = await res.json();
         setRequests(data || []);

@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { api } from '../services/api';
+import { api, API_BASE } from '../services/api';
 import {
   ShieldAlert,
   Users,
@@ -51,11 +51,11 @@ export function AdminDashboard() {
     try {
       const token = localStorage.getItem('cropcare_token');
       await Promise.all([
-        fetch(`/api/subscription/pricing/plus?price_inr=${editPricePlus}&scan_limit=50`, {
+        fetch(`${API_BASE}/subscription/pricing/plus?price_inr=${editPricePlus}&scan_limit=50`, {
           method: 'PUT',
           headers: { Authorization: `Bearer ${token}` }
         }),
-        fetch(`/api/subscription/pricing/pro?price_inr=${editPricePro}&scan_limit=500`, {
+        fetch(`${API_BASE}/subscription/pricing/pro?price_inr=${editPricePro}&scan_limit=500`, {
           method: 'PUT',
           headers: { Authorization: `Bearer ${token}` }
         })
