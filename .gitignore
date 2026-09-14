@@ -1,0 +1,51 @@
+﻿# Node dependencies
+node_modules/
+frontend/node_modules/
+.npm/
+
+# Build outputs
+frontend/dist/
+dist/
+build/
+
+# Environment variables
+.env
+.env.local
+.env.*.local
+*.env
+
+# Python / ML artifacts
+__pycache__/
+*/__pycache__/
+*/*/__pycache__/
+*/*/*/__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+env/
+venv/
+.venv/
+ENV/
+*.h5
+*.onnx
+*.tflite
+*.pt
+*.pth
+
+# IDE and OS files
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db
+
+# Database / Local storage
+*.db
+*.sqlite3
+*.log
+
+# Temp uploads
+uploaded_scans/*
+!uploaded_scans/.gitkeep
+backend/uploaded_scans/*
+!backend/uploaded_scans/.gitkeep
