@@ -131,7 +131,7 @@ export function FarmerDashboard({ onSelectScan, onOpenUpgradeModal }) {
               >
                 <div className="flex items-center gap-4">
                   <img
-                    src={scan.image_url || '/sample_leaves/sample_tomato_blight.jpg'}
+                    src={scan.image_url || './sample_leaves/sample_tomato_blight.jpg'}
                     alt={displayCrop}
                     className="w-16 h-16 rounded-xl object-cover border border-stone-200 bg-stone-100 shrink-0"
                   />

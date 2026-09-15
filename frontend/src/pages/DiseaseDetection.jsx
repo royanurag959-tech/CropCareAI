@@ -65,6 +65,9 @@ export function DiseaseDetection({ selectedCrop, setSelectedCrop, onScanComplete
       if (imageFile) {
         formData.append('image', imageFile);
       }
+      if (selectedImage) {
+        formData.append('preview_url', selectedImage);
+      }
       if (sampleName) {
         formData.append('image_sample_name', sampleName);
       }

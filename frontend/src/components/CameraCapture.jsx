@@ -194,7 +194,7 @@ export function CameraCapture({ onImageSelected, selectedImage, selectedSampleNa
     stopCamera();
     onImageSelected({
       file: null,
-      previewUrl: `/sample_leaves/${sample.name}`,
+      previewUrl: `./sample_leaves/${sample.name}`,
       sampleName: sample.name,
       cropHint: sample.crop
     });
@@ -353,7 +353,7 @@ export function CameraCapture({ onImageSelected, selectedImage, selectedSampleNa
                     className="flex items-center gap-2 p-2 rounded-lg border border-stone-200 bg-white hover:border-emerald-500 hover:bg-emerald-50/40 text-left transition shadow-sm"
                   >
                     <img
-                      src={`/sample_leaves/${sample.name}`}
+                      src={`./sample_leaves/${sample.name}`}
                       alt={label}
                       className="w-8 h-8 rounded-md object-cover bg-stone-100 border border-stone-200 shrink-0"
                     />
