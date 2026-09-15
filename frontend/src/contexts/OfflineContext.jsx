@@ -39,6 +39,9 @@ export function OfflineProvider({ children }) {
     window.addEventListener('online', handleOnline);
     window.addEventListener('offline', handleOffline);
     refreshQueueCount();
+    if (navigator.onLine) {
+      triggerManualSync();
+    }
 
     return () => {
       window.removeEventListener('online', handleOnline);

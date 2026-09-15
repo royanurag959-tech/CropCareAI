@@ -55,10 +55,18 @@ export function DetectionResult({ result, onResetScan, onRequestExpert, onNaviga
   const displayCrop = language === 'hi' ? (cropHindiMap[crop] || crop) : crop;
   const displayTitle = language === 'hi' ? (hindi_name || predicted_disease) : predicted_disease;
 
-  const localizedSymptoms = symptoms.map(s => translateToSelectedLang(s, language));
-  const localizedImmediateActions = immediate_actions.map(a => translateToSelectedLang(a, language));
-  const localizedGeneralManagement = general_management.map(m => translateToSelectedLang(m, language));
-  const localizedPrevention = prevention.map(p => translateToSelectedLang(p, language));
+  const localizedSymptoms = (language === 'hi' && result.symptoms_hi && result.symptoms_hi.length > 0)
+    ? result.symptoms_hi
+    : symptoms;
+  const localizedImmediateActions = (language === 'hi' && result.immediate_actions_hi && result.immediate_actions_hi.length > 0)
+    ? result.immediate_actions_hi
+    : immediate_actions;
+  const localizedGeneralManagement = (language === 'hi' && result.general_management_hi && result.general_management_hi.length > 0)
+    ? result.general_management_hi
+    : general_management;
+  const localizedPrevention = (language === 'hi' && result.prevention_hi && result.prevention_hi.length > 0)
+    ? result.prevention_hi
+    : prevention;
 
   const handleSaveLocally = async () => {
     await offlineStorage.saveReportLocally({

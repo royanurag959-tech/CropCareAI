@@ -6,7 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
     <meta name="theme-color" content="#32784d" />
     <meta name="description" content="CropCare AI - AI-Powered Crop Disease Detection, Advisory & Farmer Support Platform" />
-    <link rel="manifest" href="/manifest.json" />
+    <link rel="manifest" href="./manifest.json" />
     <title>🌱 CropCare AI — Detect. Explain. Solve. Prevent.</title>
     <!-- Inter Font -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -20,8 +20,11 @@
       // Register Service Worker for offline PWA capabilities
       if ('serviceWorker' in navigator) {
         window.addEventListener('load', () => {
-          navigator.serviceWorker.register('/sw.js')
-            .then(reg => console.log('CropCare AI ServiceWorker registered:', reg.scope))
+          navigator.serviceWorker.register('./sw.js?v=2')
+            .then(reg => {
+              console.log('CropCare AI ServiceWorker registered:', reg.scope);
+              reg.update();
+            })
             .catch(err => console.log('CropCare AI ServiceWorker registration failed:', err));
         });
       }
