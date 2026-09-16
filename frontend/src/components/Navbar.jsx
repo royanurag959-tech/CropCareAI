@@ -16,49 +16,13 @@ import {
   Menu,
   X,
   LogOut,
-  ShieldAlert,
-  Copy,
-  Check
+  ShieldAlert
 } from 'lucide-react';
 
 export function Navbar({ currentPage, setCurrentPage }) {
   const { t } = useLanguage();
   const { user, logout } = useAuth();
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
-  const [copied, setCopied] = useState(false);
-
-  const handleCopyLink = () => {
-    const url = 'https://royanurag959-tech.github.io/CropCareAI/';
-    if (navigator.clipboard && window.isSecureContext) {
-      navigator.clipboard.writeText(url)
-        .then(() => {
-          setCopied(true);
-          setTimeout(() => setCopied(false), 2500);
-        })
-        .catch(() => fallbackCopy(url));
-    } else {
-      fallbackCopy(url);
-    }
-  };
-
-  const fallbackCopy = (text) => {
-    try {
-      const textArea = document.createElement("textarea");
-      textArea.value = text;
-      textArea.style.position = "fixed";
-      textArea.style.left = "-999999px";
-      textArea.style.top = "-999999px";
-      document.body.appendChild(textArea);
-      textArea.focus();
-      textArea.select();
-      document.execCommand('copy');
-      document.body.removeChild(textArea);
-      setCopied(true);
-      setTimeout(() => setCopied(false), 2500);
-    } catch (err) {
-      console.warn('Fallback copy failed', err);
-    }
-  };
 
   const navItems = [
     { id: 'home', label: t('nav_home'), icon: Sprout },
@@ -124,16 +88,8 @@ export function Navbar({ currentPage, setCurrentPage }) {
             })}
           </nav>
 
-          {/* Controls: Online Status, i18n, Copy Link, Auth */}
+          {/* Controls: Online Status, i18n, Auth */}
           <div className="hidden sm:flex items-center gap-3">
-            <button
-              onClick={handleCopyLink}
-              className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-emerald-50 text-emerald-800 border border-emerald-200 text-xs font-bold hover:bg-emerald-100 transition shadow-sm"
-              title="Copy Live Demo Link"
-            >
-              {copied ? <Check className="w-3.5 h-3.5 text-emerald-700" /> : <Copy className="w-3.5 h-3.5 text-emerald-600" />}
-              <span>{copied ? 'Copied!' : 'Copy Link'}</span>
-            </button>
             <NetworkStatus />
             <LanguageSwitcher />
 
@@ -170,16 +126,8 @@ export function Navbar({ currentPage, setCurrentPage }) {
             )}
           </div>
 
-          {/* Mobile Menu Button & Copy Link */}
+          {/* Mobile Menu Button */}
           <div className="flex xl:hidden items-center gap-2">
-            <button
-              onClick={handleCopyLink}
-              className="p-1.5 rounded-lg bg-emerald-50 text-emerald-800 border border-emerald-200 text-xs font-bold hover:bg-emerald-100 transition flex items-center gap-1 shadow-sm"
-              title="Copy Live Demo Link"
-            >
-              {copied ? <Check className="w-4 h-4 text-emerald-700" /> : <Copy className="w-4 h-4 text-emerald-600" />}
-              <span className="text-[11px] font-bold">{copied ? 'Copied!' : 'Copy Link'}</span>
-            </button>
             <NetworkStatus />
             <button
               onClick={() => setMobileMenuOpen(!mobileMenuOpen)}

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { useLanguage } from '../contexts/LanguageContext';
 import {
   ScanLine,
@@ -12,47 +12,11 @@ import {
   ArrowRight,
   TrendingUp,
   Award,
-  HelpCircle,
-  Copy,
-  Check
+  HelpCircle
 } from 'lucide-react';
 
 export function Home({ setCurrentPage, setSelectedCrop }) {
   const { t, language } = useLanguage();
-  const [copied, setCopied] = useState(false);
-
-  const handleCopyLiveDemoLink = () => {
-    const url = 'https://royanurag959-tech.github.io/CropCareAI/';
-    if (navigator.clipboard && window.isSecureContext) {
-      navigator.clipboard.writeText(url)
-        .then(() => {
-          setCopied(true);
-          setTimeout(() => setCopied(false), 2500);
-        })
-        .catch(() => fallbackCopy(url));
-    } else {
-      fallbackCopy(url);
-    }
-  };
-
-  const fallbackCopy = (text) => {
-    try {
-      const textArea = document.createElement("textarea");
-      textArea.value = text;
-      textArea.style.position = "fixed";
-      textArea.style.left = "-999999px";
-      textArea.style.top = "-999999px";
-      document.body.appendChild(textArea);
-      textArea.focus();
-      textArea.select();
-      document.execCommand('copy');
-      document.body.removeChild(textArea);
-      setCopied(true);
-      setTimeout(() => setCopied(false), 2500);
-    } catch (err) {
-      console.warn('Fallback copy error:', err);
-    }
-  };
 
   const handleStartScan = (cropName = 'Tomato') => {
     if (setSelectedCrop) setSelectedCrop(cropName);
@@ -99,24 +63,6 @@ export function Home({ setCurrentPage, setSelectedCrop }) {
             >
               <ScanLine className="w-5 h-5 text-emerald-700" />
               <span>{t('nav_detect')} ({t('demo_scan_btn')})</span>
-            </button>
-
-            <button
-              onClick={handleCopyLiveDemoLink}
-              className="inline-flex items-center gap-2 px-5 py-4 rounded-2xl bg-gradient-to-r from-emerald-600 to-emerald-700 hover:from-emerald-500 hover:to-emerald-600 text-white font-extrabold text-sm border border-emerald-400/40 shadow-lg hover:shadow-xl transition hover:scale-105 active:scale-95"
-              title="Copy Live Demo Link"
-            >
-              {copied ? (
-                <>
-                  <Check className="w-5 h-5 text-amber-300" />
-                  <span>{language === 'hi' ? '✅ लिंक कॉपी हो गया!' : '✅ Demo Link Copied!'}</span>
-                </>
-              ) : (
-                <>
-                  <Copy className="w-5 h-5 text-emerald-200" />
-                  <span>{language === 'hi' ? '🔗 लाइव डेमो लिंक कॉपी करें' : '🔗 Copy Live Demo Link'}</span>
-                </>
-              )}
             </button>
 
             <button
