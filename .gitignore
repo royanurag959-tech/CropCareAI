@@ -1,4 +1,4 @@
-﻿# Node dependencies
+# Node dependencies
 node_modules/
 frontend/node_modules/
 .npm/
@@ -38,6 +38,7 @@ ENV/
 .idea/
 .DS_Store
 Thumbs.db
+~$*
 
 # Database / Local storage
 *.db

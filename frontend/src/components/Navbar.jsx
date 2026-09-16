@@ -28,6 +28,7 @@ export function Navbar({ currentPage, setCurrentPage }) {
     { id: 'home', label: t('nav_home'), icon: Sprout },
     { id: 'detect', label: t('nav_detect'), icon: ScanLine, highlight: true },
     { id: 'library', label: t('nav_library'), icon: BookOpen },
+    { id: 'team', label: t('nav_team') || 'Our Team', icon: Users },
     { id: 'dashboard', label: t('nav_dashboard'), icon: History },
     { id: 'assisted', label: t('nav_assisted'), icon: Users },
     { id: 'telecom', label: t('nav_telecom'), icon: PhoneCall },
