@@ -12,21 +12,57 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-    <script type="module" crossorigin src="./assets/index-5cTnh2Yp.js"></script>
-    <link rel="stylesheet" crossorigin href="./assets/index-DUskH3BB.css">
+    <script type="module" crossorigin src="./assets/index-Dz1lxcuR.js"></script>
+    <link rel="stylesheet" crossorigin href="./assets/index-CJSP6NiU.css">
   </head>
   <body class="bg-[#f8faf7] text-slate-800 antialiased font-['Plus_Jakarta_Sans',sans-serif]">
-    <div id="root"></div>
+    <div id="root">
+      <div style="min-height: 100vh; display: flex; flex-direction: column; align-items: center; justify-content: center; background: #f8faf7; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; padding: 24px; text-align: center;">
+        <div style="width: 52px; height: 52px; border: 4px solid #a7f3d0; border-top-color: #059669; border-radius: 50%; animation: spin 0.8s linear infinite; margin-bottom: 20px;"></div>
+        <h2 style="font-size: 20px; font-weight: 800; color: #065f46; margin: 0 0 6px 0; letter-spacing: -0.02em;">🌱 CropCare AI</h2>
+        <p style="font-size: 13px; color: #64748b; margin: 0; max-width: 280px; line-height: 1.5;">कृषि निदान मंच लोड हो रहा है...<br><span style="font-size: 12px; color: #94a3b8;">Loading diagnosis platform...</span></p>
+        <style>@keyframes spin { to { transform: rotate(360deg); } }</style>
+      </div>
+    </div>
     <script>
-      // Register Service Worker for offline PWA capabilities
+      // Global error handler to catch stale chunk mismatches and auto-reload once
+      window.addEventListener('error', function (event) {
+        var msg = (event.message || '').toLowerCase();
+        if (msg.includes('chunk') || msg.includes('unexpected token') || msg.includes('failed to fetch')) {
+          if (!sessionStorage.getItem('cc_recovered')) {
+            sessionStorage.setItem('cc_recovered', 'true');
+            if ('caches' in window) {
+              caches.keys().then(function (names) {
+                for (var name of names) caches.delete(name);
+              });
+            }
+            window.location.reload();
+          }
+        }
+      });
+
+      // Register Service Worker for offline PWA capabilities with auto-update
       if ('serviceWorker' in navigator) {
-        window.addEventListener('load', () => {
-          navigator.serviceWorker.register('./sw.js?v=2')
-            .then(reg => {
-              console.log('CropCare AI ServiceWorker registered:', reg.scope);
+        window.addEventListener('load', function () {
+          navigator.serviceWorker.register('./sw.js?v=5')
+            .then(function (reg) {
+              console.log('CropCare AI ServiceWorker active:', reg.scope);
               reg.update();
+              reg.onupdatefound = function () {
+                var newWorker = reg.installing;
+                if (newWorker) {
+                  newWorker.onstatechange = function () {
+                    if (newWorker.state === 'installed' && navigator.serviceWorker.controller) {
+                      console.log('New CropCare AI version available. Reloading...');
+                      window.location.reload();
+                    }
+                  };
+                }
+              };
             })
-            .catch(err => console.log('CropCare AI ServiceWorker registration failed:', err));
+            .catch(function (err) {
+              console.warn('ServiceWorker registration error:', err);
+            });
         });
       }
     </script>
