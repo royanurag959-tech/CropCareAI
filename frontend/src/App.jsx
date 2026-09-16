@@ -19,7 +19,6 @@ import { B2BAnalytics } from './pages/B2BAnalytics';
 import { AdminDashboard } from './pages/AdminDashboard';
 import { PricingPlans } from './pages/PricingPlans';
 import { AuthPage } from './pages/AuthPage';
-import { TeamPage } from './pages/TeamPage';
 
 export function MainLayout() {
   const [currentPage, setCurrentPage] = useState('home');
@@ -79,7 +78,6 @@ export function MainLayout() {
         )}
 
         {currentPage === 'library' && <DiseaseLibrary />}
-        {currentPage === 'team' && <TeamPage setCurrentPage={setCurrentPage} />}
 
         {currentPage === 'dashboard' && (
           <FarmerDashboard

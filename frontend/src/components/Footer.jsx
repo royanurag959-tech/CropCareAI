@@ -41,11 +41,6 @@ export function Footer({ setCurrentPage }) {
                 </button>
               </li>
               <li>
-                <button onClick={() => setCurrentPage('team')} className="hover:text-emerald-400 transition">
-                  {t('nav_team') || 'Our Team'}
-                </button>
-              </li>
-              <li>
                 <button onClick={() => setCurrentPage('assisted')} className="hover:text-emerald-400 transition">
                   {t('nav_assisted')}
                 </button>

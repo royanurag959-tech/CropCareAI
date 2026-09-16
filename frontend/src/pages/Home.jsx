@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { useLanguage } from '../contexts/LanguageContext';
 import {
   ScanLine,
@@ -12,14 +12,47 @@ import {
   ArrowRight,
   TrendingUp,
   Award,
-  Crown,
   HelpCircle,
-  Download,
-  FileText
+  Copy,
+  Check
 } from 'lucide-react';
 
 export function Home({ setCurrentPage, setSelectedCrop }) {
   const { t, language } = useLanguage();
+  const [copied, setCopied] = useState(false);
+
+  const handleCopyLiveDemoLink = () => {
+    const url = 'https://royanurag959-tech.github.io/CropCareAI/';
+    if (navigator.clipboard && window.isSecureContext) {
+      navigator.clipboard.writeText(url)
+        .then(() => {
+          setCopied(true);
+          setTimeout(() => setCopied(false), 2500);
+        })
+        .catch(() => fallbackCopy(url));
+    } else {
+      fallbackCopy(url);
+    }
+  };
+
+  const fallbackCopy = (text) => {
+    try {
+      const textArea = document.createElement("textarea");
+      textArea.value = text;
+      textArea.style.position = "fixed";
+      textArea.style.left = "-999999px";
+      textArea.style.top = "-999999px";
+      document.body.appendChild(textArea);
+      textArea.focus();
+      textArea.select();
+      document.execCommand('copy');
+      document.body.removeChild(textArea);
+      setCopied(true);
+      setTimeout(() => setCopied(false), 2500);
+    } catch (err) {
+      console.warn('Fallback copy error:', err);
+    }
+  };
 
   const handleStartScan = (cropName = 'Tomato') => {
     if (setSelectedCrop) setSelectedCrop(cropName);
@@ -68,14 +101,23 @@ export function Home({ setCurrentPage, setSelectedCrop }) {
               <span>{t('nav_detect')} ({t('demo_scan_btn')})</span>
             </button>
 
-            <a
-              href="./CropCare_AI_Hackathon_PitchDeck.pptx"
-              download="CropCare_AI_Hackathon_PitchDeck.pptx"
-              className="inline-flex items-center gap-2 px-5 py-4 rounded-2xl bg-gradient-to-r from-amber-400 to-amber-500 hover:from-amber-300 hover:to-amber-400 text-stone-950 font-black text-sm shadow-xl hover:shadow-2xl transition hover:scale-105 active:scale-95 border border-amber-300"
+            <button
+              onClick={handleCopyLiveDemoLink}
+              className="inline-flex items-center gap-2 px-5 py-4 rounded-2xl bg-gradient-to-r from-emerald-600 to-emerald-700 hover:from-emerald-500 hover:to-emerald-600 text-white font-extrabold text-sm border border-emerald-400/40 shadow-lg hover:shadow-xl transition hover:scale-105 active:scale-95"
+              title="Copy Live Demo Link"
             >
-              <Award className="w-5 h-5 text-stone-950" />
-              <span>{language === 'hi' ? '🏆 हैकाथॉन PPT (8 Slides)' : '🏆 Hackathon Pitch Deck (8 Slides)'}</span>
-            </a>
+              {copied ? (
+                <>
+                  <Check className="w-5 h-5 text-amber-300" />
+                  <span>{language === 'hi' ? '✅ लिंक कॉपी हो गया!' : '✅ Demo Link Copied!'}</span>
+                </>
+              ) : (
+                <>
+                  <Copy className="w-5 h-5 text-emerald-200" />
+                  <span>{language === 'hi' ? '🔗 लाइव डेमो लिंक कॉपी करें' : '🔗 Copy Live Demo Link'}</span>
+                </>
+              )}
+            </button>
 
             <button
               onClick={() => setCurrentPage('library')}
@@ -92,29 +134,6 @@ export function Home({ setCurrentPage, setSelectedCrop }) {
               <PhoneCall className="w-4 h-4 text-amber-400" />
               <span>{t('basic_phone_ivr')}</span>
             </button>
-          </div>
-
-          {/* Hackathon Pitch Deck Highlight Banner */}
-          <div className="flex items-center justify-between flex-wrap gap-3 p-3.5 rounded-2xl bg-amber-400/10 border border-amber-400/30 text-amber-200 text-xs">
-            <div className="flex items-center gap-2.5">
-              <span className="text-xl">📊</span>
-              <div>
-                <span className="font-extrabold text-amber-300">
-                  {language === 'hi' ? 'आधिकारिक हैकाथॉन प्रेजेंटेशन (8 स्लाइड्स):' : 'Official Hackathon Pitch Deck (8 Slides):'}
-                </span>
-                <span className="ml-1.5 text-emerald-100 hidden sm:inline">
-                  {language === 'hi' ? 'प्रॉब्लम, सॉल्यूशन, टेक स्टैक, लाइव डेमो, बिज़नेस मॉडल एवं टीम प्रोफाइल।' : 'Problem, Solution, Architecture, Live Demo, Business Model & Team.'}
-                </span>
-              </div>
-            </div>
-            <a
-              href="./CropCare_AI_Hackathon_PitchDeck.pptx"
-              download="CropCare_AI_Hackathon_PitchDeck.pptx"
-              className="px-3 py-1.5 rounded-xl bg-amber-400 hover:bg-amber-300 text-stone-950 font-bold text-xs transition flex items-center gap-1.5 shadow-sm"
-            >
-              <Download className="w-3.5 h-3.5" />
-              <span>{language === 'hi' ? 'डाउनलोड PPT (8 Slides)' : 'Download PPT (8 Slides)'}</span>
-            </a>
           </div>
 
           {/* Quick Crop Selector Pills */}
@@ -269,129 +288,6 @@ export function Home({ setCurrentPage, setSelectedCrop }) {
                 <span>{t('open_extension')}</span>
                 <ArrowRight className="w-3 h-3" />
               </button>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* PROJECT TEAM & LEADERSHIP */}
-      <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="p-8 sm:p-10 rounded-3xl bg-white border border-stone-200 shadow-sm space-y-6">
-          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
-            <div>
-              <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-bold bg-emerald-100 text-emerald-800 mb-2">
-                <Award className="w-3.5 h-3.5 text-emerald-700" />
-                <span>{language === 'hi' ? 'हैकाथॉन प्रोजेक्ट टीम' : 'Hackathon Project Team'}</span>
-              </div>
-              <h3 className="text-2xl font-black text-stone-900">
-                {language === 'hi' ? 'प्रोजेक्ट टीम एवं नेतृत्व' : 'Project Team & Leadership'}
-              </h3>
-              <p className="text-xs sm:text-sm text-stone-600 mt-1">
-                {language === 'hi'
-                  ? 'क्रॉपकेयर AI — जमीनी स्तर पर भारतीय किसानों को सशक्त बनाने वाली इनोवेटर टीम'
-                  : 'The innovator team engineering CropCare AI for Indian agriculture'}
-              </p>
-            </div>
-            <div className="flex items-center gap-3">
-              <a
-                href="./CropCare_AI_Hackathon_PitchDeck.pptx"
-                download="CropCare_AI_Hackathon_PitchDeck.pptx"
-                className="inline-flex items-center gap-2 px-4 py-2.5 rounded-xl bg-amber-400 hover:bg-amber-300 text-stone-950 font-bold text-xs shadow-sm transition"
-              >
-                <Download className="w-4 h-4" />
-                <span>{language === 'hi' ? 'डाउनलोड PPT (8 Slides)' : 'Download Pitch Deck (8 Slides)'}</span>
-              </a>
-              <button
-                onClick={() => {
-                  setCurrentPage('team');
-                  window.scrollTo({ top: 0, behavior: 'smooth' });
-                }}
-                className="inline-flex items-center gap-1.5 px-4 py-2.5 rounded-xl bg-stone-900 hover:bg-stone-800 text-white font-bold text-xs transition"
-              >
-                <span>{language === 'hi' ? 'पूरी टीम देखें' : 'View Team Page'}</span>
-                <ArrowRight className="w-3.5 h-3.5" />
-              </button>
-            </div>
-          </div>
-
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 pt-2">
-            {/* Team Leader */}
-            <div className="p-6 rounded-2xl bg-stone-900 text-white space-y-3 relative overflow-hidden border-2 border-emerald-500/80 shadow-md flex flex-col justify-between">
-              <div className="space-y-3">
-                <div className="flex items-center justify-between">
-                  <span className="px-2.5 py-1 rounded-full bg-amber-400 text-stone-950 text-[11px] font-black flex items-center gap-1">
-                    <Crown className="w-3 h-3" />
-                    <span>{language === 'hi' ? 'टीम लीडर' : 'Team Leader'}</span>
-                  </span>
-                  <span className="text-xs text-emerald-400 font-bold">Project Lead</span>
-                </div>
-                <div>
-                  <h4 className="text-lg font-extrabold text-white">Ram raghuvir Roy</h4>
-                  <div className="text-xs text-emerald-300 font-medium mt-0.5">
-                    {language === 'hi' ? 'AI सिस्टम आर्किटेक्चर एवं फुल स्टैक' : 'AI System Architecture & Full Stack'}
-                  </div>
-                </div>
-                <p className="text-xs text-stone-300 leading-relaxed">
-                  {language === 'hi'
-                    ? 'क्रॉप डिसीज़ विज़न मॉडल, रिएक्ट वेब ऐप और ऑफलाइन PWA सिस्टम का समग्र नेतृत्व व निर्माण।'
-                    : 'Led overall project architecture, disease detection model, React frontend, and offline PWA integration.'}
-                </p>
-              </div>
-              <div className="pt-3 border-t border-stone-800 text-[11px] text-amber-300 font-semibold">
-                ⭐ {language === 'hi' ? 'परियोजना समन्वयक' : 'Project Coordinator'}
-              </div>
-            </div>
-
-            {/* Team Mate 1 */}
-            <div className="p-6 rounded-2xl bg-stone-50 border border-stone-200 space-y-3 flex flex-col justify-between">
-              <div className="space-y-3">
-                <div className="flex items-center justify-between">
-                  <span className="px-2.5 py-1 rounded-full bg-stone-200 text-stone-800 text-[11px] font-bold">
-                    {language === 'hi' ? 'टीम मेंबर' : 'Team Member'}
-                  </span>
-                  <span className="text-xs text-stone-500 font-medium">Core Member</span>
-                </div>
-                <div>
-                  <h4 className="text-lg font-bold text-stone-900">Anurag kumar Ray</h4>
-                  <div className="text-xs text-emerald-700 font-semibold mt-0.5">
-                    {language === 'hi' ? 'क्लाउड, डेटाबेस एवं बैकएंड' : 'Cloud, Database & Backend Lead'}
-                  </div>
-                </div>
-                <p className="text-xs text-stone-600 leading-relaxed">
-                  {language === 'hi'
-                    ? 'डेटाबेस स्कीमा, क्लाउड डेप्लॉयमेंट, फील्ड डेटा सिंक और टेलीकॉम IVR/SMS इंटीग्रेशन।'
-                    : 'Engineered backend APIs, cloud database, deployment automation, and telecom IVR/SMS simulation.'}
-                </p>
-              </div>
-              <div className="pt-3 border-t border-stone-200 text-[11px] text-stone-500 font-medium">
-                🌱 {language === 'hi' ? 'बैकएंड इंफ्रास्ट्रक्चर' : 'Backend Infrastructure'}
-              </div>
-            </div>
-
-            {/* Team Mate 2 */}
-            <div className="p-6 rounded-2xl bg-stone-50 border border-stone-200 space-y-3 flex flex-col justify-between">
-              <div className="space-y-3">
-                <div className="flex items-center justify-between">
-                  <span className="px-2.5 py-1 rounded-full bg-stone-200 text-stone-800 text-[11px] font-bold">
-                    {language === 'hi' ? 'टीम मेंबर' : 'Team Member'}
-                  </span>
-                  <span className="text-xs text-stone-500 font-medium">Core Member</span>
-                </div>
-                <div>
-                  <h4 className="text-lg font-bold text-stone-900">Keshav kumar jha</h4>
-                  <div className="text-xs text-emerald-700 font-semibold mt-0.5">
-                    {language === 'hi' ? 'पादप रोग रिसर्च एवं UX' : 'Agronomy Research & UX Design'}
-                  </div>
-                </div>
-                <p className="text-xs text-stone-600 leading-relaxed">
-                  {language === 'hi'
-                    ? '14 फसलों के रोग लक्षण व जैविक/रासायनिक उपचार संकलन और ग्रामीण किसान-अनुकूल इंटरफ़ेस।'
-                    : 'Curated plant disease dataset, localized remedies (organic + chemical), and farmer-friendly UI/UX.'}
-                </p>
-              </div>
-              <div className="pt-3 border-t border-stone-200 text-[11px] text-stone-500 font-medium">
-                🌾 {language === 'hi' ? 'एग्रोनॉमी एवं किसान UX' : 'Agronomy & Farmer UX'}
-              </div>
             </div>
           </div>
         </div>
